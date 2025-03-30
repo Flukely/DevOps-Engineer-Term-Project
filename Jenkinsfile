@@ -2,11 +2,18 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_SITE_ID = 'f389d8a8-e9f3-4555-a70d-d0b5677d72b9' 
-        NETLIFY_AUTH = credentials('netlify-auth-token') 
+        NETLIFY_SITE_ID = 'f389d8a8-e9f3-4555-a70d-d0b5677d72b9'
+        NETLIFY_AUTH = credentials('netlify-auth-token')
     }
 
     stages {
+        stage('Checkout and Setup') {
+            steps {
+                echo 'Checking out repository and setting up environment...'
+                sh 'ls -la'
+            }
+        }
+
         stage('Build') {
             agent {
                 docker {
@@ -16,13 +23,12 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "-------------------Building the project--------------------"
-                    ls -la
+                    echo "================Building the project================"
                     node --version
                     npm --version
                     npm ci
                     npm run build
-                    ls -la
+                    ls -la build/
                 '''
             }
         }
@@ -36,9 +42,10 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "------------------Testing the project------------------"
-                    test -f build/index.html
+                    echo "================Testing the project================"
+                    mkdir -p test-results
                     npm test
+                    ls -la test-results/
                 '''
                 junit 'test-results/junit.xml'
             }
@@ -53,13 +60,27 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo "================Deploying the project================"
                     npm install netlify-cli --save-dev
-                    node_modules/.bin/netlify --version
-                    echo "------------------Deploying the project-------------------"
+                    echo "Netlify CLI version:"
+                    npx netlify --version
                     echo "Deploying to Netlify Site ID: $NETLIFY_SITE_ID"
-                    node_modules/.bin/netlify deploy --dir=build --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH
+                    npx netlify deploy --dir=build --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH
                 '''
             }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline completed - cleaning up"
+            cleanWs()
+        }
+        success {
+            echo "Pipeline succeeded!"
+        }
+        failure {
+            echo "Pipeline failed!"
         }
     }
 }
