@@ -38,7 +38,11 @@ pipeline {
                     echo "================Running Tests================"
                     npm test -- --forceExit || echo "Tests completed"
                 '''
-                // ไม่มีการใช้ junit reporter ที่นี่
+            }
+            post {
+                always {
+                    junit 'test-results/*.xml' // เก็บผลลัพธ์การทดสอบ
+                }
             }
         }
 
