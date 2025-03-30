@@ -1,95 +1,65 @@
 pipeline {
-    agent {
-        docker {
-            image "node:${NODE_VERSION}"
-            args '-u root' // หลีกเลี่ยงปัญหา permission
-        }
-    }
+    agent any
 
     environment {
-        APP_NAME = 'my-nodejs-app'
-        REPO_URL = 'https://github.com/Flukely/DevOps-Engineer-Term-Project.git'
-        DEPLOY_DIR = 'dist'
-        NODE_VERSION = '16'
+        NETLIFY_SITE_ID = 'f389d8a8-e9f3-4555-a70d-d0b5677d72b9' 
+        NETLIFY_AUTH = credentials('netlify-auth-token') 
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                echo 'Checking out source code from repository...'
-                git branch: 'main', url: "${REPO_URL}"
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                echo 'Installing dependencies...'
-                sh 'npm install'
-            }
-        }
-
         stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
             steps {
-                echo 'Building application...'
-                sh 'npm run build'
-                archiveArtifacts artifacts: '${DEPLOY_DIR}/**/*', fingerprint: true
+                sh '''
+                    echo "-------------------Building the project--------------------"
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
             }
         }
 
         stage('Test') {
-            steps {
-                echo 'Running tests...'
-                sh 'npm test'
-                junit '**/test-results.xml' // เก็บผลลัพธ์การทดสอบ
-            }
-        }
-
-        stage('Code Quality Check') {
-            steps {
-                echo 'Running linting...'
-                sh 'npm run lint'
-            }
-        }
-
-        stage('Deploy to Netlify') {
-            when {
-                branch 'main'
-            }
-            steps {
-                echo 'Deploying to Netlify...'
-                withCredentials([
-                    string(credentialsId: 'netlify-site-id', variable: 'NETLIFY_SITE_ID'),
-                    string(credentialsId: 'netlify-auth-token', variable: 'NETLIFY_AUTH_TOKEN')
-                ]) {
-                    sh '''
-                        npm install -g netlify-cli
-                        netlify deploy \
-                            --site $NETLIFY_SITE_ID \
-                            --auth $NETLIFY_AUTH_TOKEN \
-                            --prod \
-                            --dir=${DEPLOY_DIR}
-                    '''
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
                 }
             }
-        }
-
-        stage('Post-Deploy') {
             steps {
-                echo 'Deployment completed successfully!'
+                sh '''
+                    echo "------------------Testing the project------------------"
+                    test -f build/index.html
+                    npm test
+                '''
+                junit 'test-results/junit.xml'
             }
         }
-    }
 
-    post {
-        always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
-        }
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed! Check the logs for details.'
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    npm install netlify-cli --save-dev
+                    node_modules/.bin/netlify --version
+                    echo "------------------Deploying the project-------------------"
+                    echo "Deploying to Netlify Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify deploy --dir=build --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH
+                '''
+            }
         }
     }
 }
