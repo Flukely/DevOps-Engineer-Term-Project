@@ -44,7 +44,7 @@ pipeline {
                 sh '''
                     echo "================Testing the project================"
                     mkdir -p test-results
-                    npm test
+                    npm test -- --forceExit
                     ls -la test-results/
                 '''
                 junit 'test-results/junit.xml'

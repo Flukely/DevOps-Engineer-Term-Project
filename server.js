@@ -1,21 +1,17 @@
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware
+app.use(express.json());
 app.use(express.static('public'));
 
-// Route หลัก
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
-});
-
-// API ตัวอย่าง
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from Node.js!' });
 });
 
-// Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// Export ทั้ง app และ server
+module.exports = { app, server };
