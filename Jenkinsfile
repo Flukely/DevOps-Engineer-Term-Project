@@ -1,15 +1,16 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image "node:${NODE_VERSION}"
+            args '-u root' // หลีกเลี่ยงปัญหา permission
+        }
+    }
 
     environment {
-        // กำหนดตัวแปรสภาพแวดล้อม
         APP_NAME = 'my-nodejs-app'
         REPO_URL = 'https://github.com/Flukely/DevOps-Engineer-Term-Project.git'
         DEPLOY_DIR = 'dist'
-        NODE_VERSION = '16' // ใช้เวอร์ชันที่เหมาะสมกับโปรเจคของคุณ
-        NETLIFY_SITE_ID = credentials('netlify-site-id') // เก็บใน Jenkins Credentials
-        NETLIFY_AUTH_TOKEN = credentials('netlify-auth-token') // เก็บใน Jenkins Credentials
-        SLACK_CHANNEL = '#your-channel'
+        NODE_VERSION = '16'
     }
 
     stages {
@@ -22,24 +23,15 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing Node.js and dependencies...'
-                sh """
-                    nvm install ${NODE_VERSION}
-                    nvm use ${NODE_VERSION}
-                    npm install
-                """
+                echo 'Installing dependencies...'
+                sh 'npm install'
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Building application...'
-                sh """
-                    nvm use ${NODE_VERSION}
-                    npm run build
-                """
-                
-                // Archive artifacts สำหรับเก็บผลลัพธ์การ build
+                sh 'npm run build'
                 archiveArtifacts artifacts: '${DEPLOY_DIR}/**/*', fingerprint: true
             }
         }
@@ -47,52 +39,43 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh """
-                    nvm use ${NODE_VERSION}
-                    npm test
-                """
-                
-                // เก็บผลลัพธ์การทดสอบ (ถ้ามี)
-                junit '**/test-results.xml' 
+                sh 'npm test'
+                junit '**/test-results.xml' // เก็บผลลัพธ์การทดสอบ
             }
         }
 
         stage('Code Quality Check') {
             steps {
-                echo 'Running linting and code quality checks...'
-                sh """
-                    nvm use ${NODE_VERSION}
-                    npm run lint
-                """
-                // สามารถเพิ่ม SonarQube analysis ที่นี่ได้
+                echo 'Running linting...'
+                sh 'npm run lint'
             }
         }
 
         stage('Deploy to Netlify') {
             when {
-                branch 'main' // Deploy เฉพาะเมื่อ merge เข้า branch main
+                branch 'main'
             }
             steps {
                 echo 'Deploying to Netlify...'
-                sh """
-                    nvm use ${NODE_VERSION}
-                    npm install -g netlify-cli
-                    netlify deploy \
-                        --site ${NETLIFY_SITE_ID} \
-                        --auth ${NETLIFY_AUTH_TOKEN} \
-                        --prod \
-                        --dir=${DEPLOY_DIR}
-                """
+                withCredentials([
+                    string(credentialsId: 'netlify-site-id', variable: 'NETLIFY_SITE_ID'),
+                    string(credentialsId: 'netlify-auth-token', variable: 'NETLIFY_AUTH_TOKEN')
+                ]) {
+                    sh '''
+                        npm install -g netlify-cli
+                        netlify deploy \
+                            --site $NETLIFY_SITE_ID \
+                            --auth $NETLIFY_AUTH_TOKEN \
+                            --prod \
+                            --dir=${DEPLOY_DIR}
+                    '''
+                }
             }
         }
 
         stage('Post-Deploy') {
             steps {
-                echo 'Running post-deploy tasks...'
-                // ส่งอีเมลแจ้งเตือน
-                emailext body: 'Deployment completed successfully!',
-                         subject: 'Deployment Success - ${env.JOB_NAME}',
-                         to: 'songpanonk65@nu.ac.th'
+                echo 'Deployment completed successfully!'
             }
         }
     }
@@ -106,11 +89,7 @@ pipeline {
             echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed!'
-            // ส่ง notification เมื่อล้มเหลว
-            slackSend channel: "${SLACK_CHANNEL}",
-                      color: 'danger',
-                      message: "Deployment Failed: ${env.JOB_NAME} build ${env.BUILD_NUMBER}\nMore info: ${env.BUILD_URL}"
+            echo 'Pipeline failed! Check the logs for details.'
         }
     }
 }

@@ -1,22 +1,128 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
-  <title>My Node.js App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แนะนำตัว Songpanon</title>
   <style>
-    body { font-family: Arial; text-align: center; margin-top: 50px; }
-    button { padding: 10px 20px; font-size: 16px; }
+    body {
+      font-family: 'Kanit', Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #4CAF50;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+    .position {
+      color: #666;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+    section {
+      margin-bottom: 25px;
+    }
+    h2 {
+      color: #4CAF50;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .skill {
+      background-color: #e9f7ef;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+    }
+    .contact-btn {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+    .contact-btn:hover {
+      background-color: #45a049;
+    }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Welcome to My Node App</h1>
-  <button id="getMessage">Get Message</button>
-  <p id="message"></p>
+  <div class="container">
+    <header>
+      <img src="Profile.png" alt="Profile Image" class="profile-img">
+      <h1>Songpanon Kumtue</h1>
+      <p class="position">Computer Science</p>
+      <p>Naresuan Universit</p>
+    </header>
+
+    <section>
+      <h2>ทักษะ</h2>
+      <div class="skills">
+        <span class="skill">Python</span>
+        <span class="skill">Java</span>
+        <span class="skill">HTML</span>
+        <span class="skill">CSS</span>
+        <span class="skill">Django</span>
+        <span class="skill">SQL</span>
+        <span class="skill">JavaScript</span>
+        <span class="skill">Node.js</span>
+        <span class="skill">Git</span>
+        <span class="skill">Jenkins</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>การศึกษา</h2>
+      <p><strong>Naresuan Universit</strong> - Computer Science(2565-ปัจจุบัน)</p>
+    </section>
+
+    <section>
+      <h2>โครงการที่เคยทำ</h2>
+      <p><strong>CSIT Partner Management System</strong></p>
+      <p><strong>MadeChuu Market</strong></p>
+    </section>
+
+    <section style="text-align: center;">
+      <a href="mailto:your.email@example.com" class="contact-btn">ติดต่อฉัน</a>
+    </section>
+  </div>
 
   <script>
-    document.getElementById('getMessage').addEventListener('click', async () => {
-      const response = await fetch('/api/hello');
-      const data = await response.json();
-      document.getElementById('message').textContent = data.message;
+    // ตัวอย่างการเพิ่มฟังก์ชัน JavaScript
+    document.querySelector('.contact-btn').addEventListener('click', function(e) {
+      alert('ขอบคุณที่สนใจติดต่อฉัน!');
     });
   </script>
 </body>
