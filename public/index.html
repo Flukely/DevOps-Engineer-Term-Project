@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Node.js App</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; }
+    button { padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to My Node App</h1>
+  <button id="getMessage">Get Message</button>
+  <p id="message"></p>
+
+  <script>
+    document.getElementById('getMessage').addEventListener('click', async () => {
+      const response = await fetch('/api/hello');
+      const data = await response.json();
+      document.getElementById('message').textContent = data.message;
+    });
+  </script>
+</body>
+</html>
