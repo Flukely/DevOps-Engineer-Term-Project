@@ -16,7 +16,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "================Building the project================"
+                    echo "-----------------Building the project-----------------"
                     node --version
                     npm --version
                     npm ci
@@ -35,7 +35,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "================Running Tests================"
+                    echo "-------------------Running Tests-----------------------"
                     npm test
                 '''
             }
@@ -47,11 +47,32 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "================Deploying to Netlify================"
-                    npm install netlify-cli --save-dev
+                    echo "------------------Deploying to Netlif----------------------"
+                    npm install -g netlify-cli
                     npx netlify --version
                     npx netlify deploy --dir=build --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH
                 '''
+            }
+        }
+
+        stage('Post deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    emailext subject: "🎉 Deployment Completed!",
+                        body: """
+                        <h2>✅ Deployment Successful!</h2>
+                        <p>The latest deployment to Netlify has been completed successfully.</p>
+                        <p><b>Project:</b> DevOps Jenkins</p>
+                        <p><b>Branch:</b> main</p>
+                        <p>🌍 <a href="https://my-nodejs-app-65315062.netlify.app">View Deployment</a></p>
+                        """,
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                        to: "songpanonkfluk@gmail.com",
+                        mimeType: "text/html"
+                }
             }
         }
     }
