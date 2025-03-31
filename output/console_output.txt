@@ -1,0 +1,170 @@
+Started by user Songpanon
+Obtained Jenkinsfile from git https://github.com/Flukely/DevOps-Engineer-Term-Project.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/my-nodejs-app
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository https://github.com/Flukely/DevOps-Engineer-Term-Project.git
+ > git init /var/jenkins_home/workspace/my-nodejs-app # timeout=10
+Fetching upstream changes from https://github.com/Flukely/DevOps-Engineer-Term-Project.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/Flukely/DevOps-Engineer-Term-Project.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/Flukely/DevOps-Engineer-Term-Project.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 06d92f57cce1cea637952319efe4c6de48a8839d (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 06d92f57cce1cea637952319efe4c6de48a8839d # timeout=10
+Commit message: "edit"
+ > git rev-list --no-walk 06d92f57cce1cea637952319efe4c6de48a8839d # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $NETLIFY_AUTH
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container 0d73aadd6b25c0a918ca351a401b9623cf382b8d055f0f5474a1116123103a15
+but /var/jenkins_home/workspace/my-nodejs-app could not be found among []
+but /var/jenkins_home/workspace/my-nodejs-app@tmp could not be found among []
+$ docker run -t -d -u 1000:1000 -w /var/jenkins_home/workspace/my-nodejs-app -v /var/jenkins_home/workspace/my-nodejs-app:/var/jenkins_home/workspace/my-nodejs-app:rw,z -v /var/jenkins_home/workspace/my-nodejs-app@tmp:/var/jenkins_home/workspace/my-nodejs-app@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 8757f77d2bf6689447c24f194c95f3fd17a29039adba5cab874d3e81ee0b3e06 -eo pid,comm
+[Pipeline] {
+[Pipeline] sh
++ echo '================Building the project================'
+================Building the project================
++ node --version
+v18.20.8
++ npm --version
+10.8.2
++ npm ci
+npm warn deprecated superagent@8.1.2: Please upgrade to v9.0.0+ as we have fixed a public vulnerability with formidable dependency. Note that v9.0.0+ requires Node.js v14.18.0+. See https://github.com/ladjs/superagent/pull/1800 for insight. This project is supported and maintained by the team at Forward Email @ https://forwardemail.net
+
+added 428 packages, and audited 429 packages in 7s
+
+65 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
++ npm run build
+
+> my-nodejs-app@1.0.0 build
+> npm install && mkdir -p build && cp -r public/* build/
+
+
+up to date, audited 429 packages in 1s
+
+65 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
++ ls -la build/
+total 820
+drwxr-xr-x    2 node     node          4096 Mar 31 07:25 .
+drwxr-xr-x    8 node     node          4096 Mar 31 07:25 ..
+-rw-r--r--    1 node     node        824784 Mar 31 07:25 Profile.png
+-rw-r--r--    1 node     node          3397 Mar 31 07:25 index.html
+[Pipeline] }
+$ docker stop --time=1 8757f77d2bf6689447c24f194c95f3fd17a29039adba5cab874d3e81ee0b3e06
+$ docker rm -f --volumes 8757f77d2bf6689447c24f194c95f3fd17a29039adba5cab874d3e81ee0b3e06
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] getContext
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:18-alpine
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container 0d73aadd6b25c0a918ca351a401b9623cf382b8d055f0f5474a1116123103a15
+but /var/jenkins_home/workspace/my-nodejs-app could not be found among []
+but /var/jenkins_home/workspace/my-nodejs-app@tmp could not be found among []
+$ docker run -t -d -u 1000:1000 -w /var/jenkins_home/workspace/my-nodejs-app -v /var/jenkins_home/workspace/my-nodejs-app:/var/jenkins_home/workspace/my-nodejs-app:rw,z -v /var/jenkins_home/workspace/my-nodejs-app@tmp:/var/jenkins_home/workspace/my-nodejs-app@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
+$ docker top 6857a4d84903903a1aeb33b387282a688f68b25919683768c97767eac57c0963 -eo pid,comm
+[Pipeline] {
+[Pipeline] sh
++ echo '================Running Tests================'
+================Running Tests================
++ npm test
+
+> my-nodejs-app@1.0.0 test
+> jest --ci --forceExit
+
+  console.log
+    Server running on http://localhost:3000
+
+      at Server.log (server.js:13:11)
+
+PASS __tests__/app.test.js
+  GET /api/hello
+    ✓ should return hello message (42 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.592 s
+Ran all test suites.
+Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
+[Pipeline] }
+$ docker stop --time=1 6857a4d84903903a1aeb33b387282a688f68b25919683768c97767eac57c0963
+$ docker rm -f --volumes 6857a4d84903903a1aeb33b387282a688f68b25919683768c97767eac57c0963
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Cleaning up workspace...
+[Pipeline] cleanWs
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] done
+[Pipeline] echo
+Pipeline succeeded!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
