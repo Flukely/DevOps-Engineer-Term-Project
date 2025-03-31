@@ -50,8 +50,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "------------------Deploying to Netlif----------------------"
-                    npm install -g netlify-cli
+                    echo "------------------Deploying to Netlify----------------------"
                     npx netlify --version
                     npx netlify deploy --dir=build --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH
                 '''
