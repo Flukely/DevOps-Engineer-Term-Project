@@ -60,9 +60,6 @@ pipeline {
         }
 
         stage('Post deploy') {
-            when {
-                branch 'main'
-            }
             steps {
                 script {
                     emailext subject: "🎉 Deployment Completed!",
