@@ -21,11 +21,11 @@ Fetching upstream changes from https://github.com/Flukely/DevOps-Engineer-Term-P
  > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
 Avoid second fetch
  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
-Checking out Revision fda140eb05c2ac5d2a9fcbe1a8cfef05539e24d7 (refs/remotes/origin/main)
+Checking out Revision aea5056e6c9e1b9d62b00c8dc359bca702c50fd3 (refs/remotes/origin/main)
  > git config core.sparsecheckout # timeout=10
- > git checkout -f fda140eb05c2ac5d2a9fcbe1a8cfef05539e24d7 # timeout=10
+ > git checkout -f aea5056e6c9e1b9d62b00c8dc359bca702c50fd3 # timeout=10
 Commit message: "edit"
- > git rev-list --no-walk 31f5e3478c5fa9f6dece506e0b099e792a1d78da # timeout=10
+ > git rev-list --no-walk aea5056e6c9e1b9d62b00c8dc359bca702c50fd3 # timeout=10
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] withEnv
@@ -51,7 +51,7 @@ Jenkins seems to be running inside container 0d73aadd6b25c0a918ca351a401b9623cf3
 but /var/jenkins_home/workspace/my-nodejs-app could not be found among []
 but /var/jenkins_home/workspace/my-nodejs-app@tmp could not be found among []
 $ docker run -t -d -u 1000:1000 -w /var/jenkins_home/workspace/my-nodejs-app -v /var/jenkins_home/workspace/my-nodejs-app:/var/jenkins_home/workspace/my-nodejs-app:rw,z -v /var/jenkins_home/workspace/my-nodejs-app@tmp:/var/jenkins_home/workspace/my-nodejs-app@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
-$ docker top 5b469e34025a793c63db12349f71f680a52a275f7b116dda8285373549b62209 -eo pid,comm
+$ docker top 5bbe4573a175eafbc05b23aca6838ef8fef4b71030cfc92b285bed6668f9b0b4 -eo pid,comm
 [Pipeline] {
 [Pipeline] sh
 + echo '-----------------Building the project-----------------'
@@ -75,7 +75,7 @@ found 0 vulnerabilities
 > npm install && mkdir -p build && cp -r public/* build/
 
 
-up to date, audited 435 packages in 2s
+up to date, audited 435 packages in 1s
 
 66 packages are looking for funding
   run `npm fund` for details
@@ -83,13 +83,13 @@ up to date, audited 435 packages in 2s
 found 0 vulnerabilities
 + ls -la build/
 total 820
-drwxr-xr-x    2 node     node          4096 Mar 31 09:38 .
-drwxr-xr-x    8 node     node          4096 Mar 31 09:38 ..
--rw-r--r--    1 node     node        824784 Mar 31 09:38 Profile.png
--rw-r--r--    1 node     node          3397 Mar 31 09:38 index.html
+drwxr-xr-x    2 node     node          4096 Mar 31 10:04 .
+drwxr-xr-x    8 node     node          4096 Mar 31 10:04 ..
+-rw-r--r--    1 node     node        824784 Mar 31 10:04 Profile.png
+-rw-r--r--    1 node     node          3397 Mar 31 10:04 index.html
 [Pipeline] }
-$ docker stop --time=1 5b469e34025a793c63db12349f71f680a52a275f7b116dda8285373549b62209
-$ docker rm -f --volumes 5b469e34025a793c63db12349f71f680a52a275f7b116dda8285373549b62209
+$ docker stop --time=1 5bbe4573a175eafbc05b23aca6838ef8fef4b71030cfc92b285bed6668f9b0b4
+$ docker rm -f --volumes 5bbe4573a175eafbc05b23aca6838ef8fef4b71030cfc92b285bed6668f9b0b4
 [Pipeline] // withDockerContainer
 [Pipeline] }
 [Pipeline] // stage
@@ -109,7 +109,7 @@ Jenkins seems to be running inside container 0d73aadd6b25c0a918ca351a401b9623cf3
 but /var/jenkins_home/workspace/my-nodejs-app could not be found among []
 but /var/jenkins_home/workspace/my-nodejs-app@tmp could not be found among []
 $ docker run -t -d -u 1000:1000 -w /var/jenkins_home/workspace/my-nodejs-app -v /var/jenkins_home/workspace/my-nodejs-app:/var/jenkins_home/workspace/my-nodejs-app:rw,z -v /var/jenkins_home/workspace/my-nodejs-app@tmp:/var/jenkins_home/workspace/my-nodejs-app@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
-$ docker top 7db9e1f73ae1ba64c09adc2a14aa74d751506cf5380b7561c1b5a43c1c89d84b -eo pid,comm
+$ docker top f574afa70558473cf00f843795ca41d07a8c7f2bb1bb8bf07ffa0ef309553176 -eo pid,comm
 [Pipeline] {
 [Pipeline] sh
 + echo '-------------------Running Tests-----------------------'
@@ -126,17 +126,17 @@ $ docker top 7db9e1f73ae1ba64c09adc2a14aa74d751506cf5380b7561c1b5a43c1c89d84b -e
 
 PASS __tests__/app.test.js
   GET /api/hello
-    ✓ should return hello message (42 ms)
+    ✓ should return hello message (48 ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
-Time:        0.611 s
+Time:        0.614 s
 Ran all test suites.
 Force exiting Jest: Have you considered using `--detectOpenHandles` to detect async operations that kept running after all tests finished?
 [Pipeline] }
-$ docker stop --time=1 7db9e1f73ae1ba64c09adc2a14aa74d751506cf5380b7561c1b5a43c1c89d84b
-$ docker rm -f --volumes 7db9e1f73ae1ba64c09adc2a14aa74d751506cf5380b7561c1b5a43c1c89d84b
+$ docker stop --time=1 f574afa70558473cf00f843795ca41d07a8c7f2bb1bb8bf07ffa0ef309553176
+$ docker rm -f --volumes f574afa70558473cf00f843795ca41d07a8c7f2bb1bb8bf07ffa0ef309553176
 [Pipeline] // withDockerContainer
 [Pipeline] }
 [Pipeline] // stage
@@ -156,7 +156,7 @@ Jenkins seems to be running inside container 0d73aadd6b25c0a918ca351a401b9623cf3
 but /var/jenkins_home/workspace/my-nodejs-app could not be found among []
 but /var/jenkins_home/workspace/my-nodejs-app@tmp could not be found among []
 $ docker run -t -d -u 1000:1000 -w /var/jenkins_home/workspace/my-nodejs-app -v /var/jenkins_home/workspace/my-nodejs-app:/var/jenkins_home/workspace/my-nodejs-app:rw,z -v /var/jenkins_home/workspace/my-nodejs-app@tmp:/var/jenkins_home/workspace/my-nodejs-app@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:18-alpine cat
-$ docker top 331822d5d602837c391645f2f2a95ea03710a512c0e6635e3148dcfb8c139666 -eo pid,comm
+$ docker top 69846981ee567bae74695d373153607c7396a1e8315e5ec1b49f08832b82f61c -eo pid,comm
 [Pipeline] {
 [Pipeline] sh
 + echo '------------------Installing netlify-cli----------------------'
@@ -168,7 +168,7 @@ npm warn deprecated gauge@3.0.2: This package is no longer supported.
 npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
 npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
 
-added 1596 packages, and audited 2034 packages in 36s
+added 1596 packages, and audited 2034 packages in 43s
 
 284 packages are looking for funding
   run `npm fund` for details
@@ -197,7 +197,7 @@ Netlify Build
 ​
 ❯ Flags
   auth: ****
-  deployId: 67ea62c2626da23ee446898e
+  deployId: 67ea68f78a43430e59e761e1
   dir: build
   open: false
   prod: true
@@ -219,27 +219,32 @@ Netlify Build
 [33m⠙[39m No cached functions were found
 [33m⠙[39m Finished hashing 
 [33m⠋[39m CDN diffing files...
-[33m⠙[39m CDN requesting 1 files
-[33m⠋[39m Uploading 1 files
-[33m⠙[39m Finished uploading 1 assets
+[33m⠙[39m CDN requesting 0 files
+[33m⠋[39m Uploading 0 files
+[33m⠙[39m Finished uploading 0 assets
 [33m⠋[39m Waiting for deploy to go live...
 [33m⠙[39m Deploy is live!
 
-Build logs:         https://app.netlify.com/sites/my-nodejs-app-65315062/deploys/67ea62c2626da23ee446898e
+Build logs:         https://app.netlify.com/sites/my-nodejs-app-65315062/deploys/67ea68f78a43430e59e761e1
 Function logs:      https://app.netlify.com/sites/my-nodejs-app-65315062/logs/functions
 Edge function Logs: https://app.netlify.com/sites/my-nodejs-app-65315062/logs/edge-functions
-Unique deploy URL:  https://67ea62c2626da23ee446898e--my-nodejs-app-65315062.netlify.app
+Unique deploy URL:  https://67ea68f78a43430e59e761e1--my-nodejs-app-65315062.netlify.app
 Website URL:        https://my-nodejs-app-65315062.netlify.app
 [Pipeline] }
-$ docker stop --time=1 331822d5d602837c391645f2f2a95ea03710a512c0e6635e3148dcfb8c139666
-$ docker rm -f --volumes 331822d5d602837c391645f2f2a95ea03710a512c0e6635e3148dcfb8c139666
+$ docker stop --time=1 69846981ee567bae74695d373153607c7396a1e8315e5ec1b49f08832b82f61c
+$ docker rm -f --volumes 69846981ee567bae74695d373153607c7396a1e8315e5ec1b49f08832b82f61c
 [Pipeline] // withDockerContainer
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
 [Pipeline] { (Post deploy)
-Stage "Post deploy" skipped due to when conditional
-[Pipeline] getContext
+[Pipeline] script
+[Pipeline] {
+[Pipeline] emailext
+Sending email to: songpanonkfluk@gmail.com
+Not sent to the following valid addresses: songpanonkfluk@gmail.com
+[Pipeline] }
+[Pipeline] // script
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
