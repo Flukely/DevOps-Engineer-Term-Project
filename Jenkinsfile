@@ -36,13 +36,8 @@ pipeline {
             steps {
                 sh '''
                     echo "================Running Tests================"
-                    npm test -- --forceExit || echo "Tests completed"
+                    npm test
                 '''
-            }
-            post {
-                always {
-                    junit 'test-results/*.xml' // เก็บผลลัพธ์การทดสอบ
-                }
             }
         }
 

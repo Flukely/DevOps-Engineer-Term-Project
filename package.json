@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "npm install && mkdir -p build && cp -r public/* build/",
-    "test": "jest --ci --reporters=default --reporters=jest-junit",
+    "test": "jest --ci --forceExit",
     "lint": "eslint ."
   },
   "dependencies": {
